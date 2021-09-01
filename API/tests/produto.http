@@ -1,0 +1,26 @@
+POST https://localhost:5001/api/produto/create
+Content-Type: application/json
+
+{
+    "Nome" : "Bolacha",
+    "Preco" : 3.5
+}
+
+
+###
+GET https://localhost:5001/api/produto/list
+
+###
+
+PUT https://localhost:5001/api/produto/update/2
+Content-Type: application/json
+
+{
+    "Id" : 2,
+    "Nome" : "Mudei a bolacha de novo",
+    "Preco" : 5.8
+}
+
+###
+
+DELETE https://localhost:5001/api/produto/delete/1
