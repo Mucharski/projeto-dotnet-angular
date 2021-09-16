@@ -24,49 +24,56 @@ namespace API.Controllers
         [HttpPost]
         [Route("create")]
 
-        public Produto Create(Produto produto)
+        public IActionResult Create([FromBody] Produto produto)
         {
             _context.Produtos.Add(produto);
             _context.SaveChanges();
-            return produto;
+            return Created("", produto);
         }
 
         //GET: api/produto/list
         [HttpGet]
         [Route("list")]
 
-        public List<Produto> List() => _context.Produtos.ToList();
+        public IActionResult List() => Ok(_context.Produtos.ToList());
 
         //GET : api/produto/getbyid/id
         [HttpGet]
         [Route("getbyid/{id}")]
+        public IActionResult GetById([FromRoute] int id)
+        {
+            // Busca pela chave primária
+            Produto produto = _context.Produtos.Find(id);
+            if (produto == null)
+            {
+                return NotFound();
+            }
+            return Ok(produto);
+        }
 
         //PUT: api/produto/update/{id}
         [HttpPut]
         [Route("update/{id}")]
 
-        public async Task<IActionResult> Update(long id, Produto produto)
+        public IActionResult Update([FromBody] Produto produto)
         {
 
-            if (id != produto.Id)
-            {
-                return BadRequest();
-            }
-            _context.Entry(produto).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            _context.Produtos.Update(produto);
+            _context.SaveChanges();
+            return Ok(produto);
         }
 
-        //DELETE: api/produto/delete/{id}
+        //DELETE: api/produto/delete/{name}
 
         [HttpDelete]
-        [Route("delete/{id}")]
+        [Route("delete/{name}")]
 
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete([FromRoute] string name)
         {
 
-            var produto = await _context.Produtos.FindAsync(id);
+            Produto produto = _context.Produtos.FirstOrDefault(
+                produto => produto.Nome == name
+            );
 
             if (produto == null)
             {
@@ -74,8 +81,8 @@ namespace API.Controllers
             }
 
             _context.Produtos.Remove(produto);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            _context.SaveChanges();
+            return Ok(_context.Produtos.ToList());
         }
 
     }
