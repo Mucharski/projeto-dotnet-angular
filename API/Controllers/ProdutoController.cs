@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace API.Controllers
 {
@@ -35,6 +36,10 @@ namespace API.Controllers
         [Route("list")]
 
         public List<Produto> List() => _context.Produtos.ToList();
+
+        //GET : api/produto/getbyid/id
+        [HttpGet]
+        [Route("getbyid/{id}")]
 
         //PUT: api/produto/update/{id}
         [HttpPut]

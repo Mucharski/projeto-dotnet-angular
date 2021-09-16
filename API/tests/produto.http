@@ -24,3 +24,8 @@ Content-Type: application/json
 ###
 
 DELETE https://localhost:5001/api/produto/delete/1
+
+
+###
+
+GET https://localhost:5001/api/produto/getbyid/1
